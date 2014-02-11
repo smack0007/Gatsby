@@ -35,8 +35,16 @@
     <Reference Include="ComponentGlue">
       <HintPath>..\packages\ComponentGlue.1.0.0\lib\net40\ComponentGlue.dll</HintPath>
     </Reference>
+    <Reference Include="RazorBurn">
+      <HintPath>..\..\Library\RazorBurn.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,14 +52,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProcessorPathFilter.cs" />
-    <Compile Include="ProcessorPathFilter.cs" />
+    <Compile Include="..\..\Library\Markdown.cs">
+      <Link>Markdown.cs</Link>
+    </Compile>
+    <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="CommandLineOptionsParser.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="ConfigGenerator.cs" />
+    <Compile Include="ConfigParser.cs" />
+    <Compile Include="DynamicDictionary.cs" />
+    <Compile Include="GatsbyAction.cs" />
+    <Compile Include="GatsbyException.cs" />
+    <Compile Include="Layout.cs" />
+    <Compile Include="MarkdownHighlighter.cs" />
+    <Compile Include="MarkdownTransformer.cs" />
+    <Compile Include="Page.cs" />
+    <Compile Include="Post.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RazorRenderer.cs" />
+    <Compile Include="Site.cs" />
+    <Compile Include="SiteBuilder.cs" />
+    <Compile Include="SourceFileEnumerator.cs" />
+    <Compile Include="SourceFilePath.cs" />
+    <Compile Include="SourceFiles.cs" />
+    <Compile Include="XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

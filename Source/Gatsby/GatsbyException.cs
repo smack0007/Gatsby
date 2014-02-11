@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public interface IProcessorPathFilter
+    public class GatsbyException : Exception
     {
-        bool ShouldProcess(string path);
+        public GatsbyException(string message)
+            : base(message)
+        {
+        }
     }
 }
