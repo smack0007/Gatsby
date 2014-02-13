@@ -10,19 +10,27 @@ namespace Gatsby
     public class SiteBuilder
     {
         SourceFileEnumerator sourceFileEnumerator;
+        PluginCompiler pluginCompiler;
         RazorRenderer razorRenderer;
 
         public SiteBuilder(
             SourceFileEnumerator sourceFileEnumerator,
+            PluginCompiler pluginCompiler,
             RazorRenderer razorRenderer)
         {
             this.sourceFileEnumerator = sourceFileEnumerator;
+            this.pluginCompiler = pluginCompiler;
             this.razorRenderer = razorRenderer;
         }
 
         public void Build(Config config)
         {
             SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source);
+
+            foreach (var path in sourceFiles.Plugins)
+            {
+                this.pluginCompiler.Compile(path);
+            }
 
             this.razorRenderer.LoadLayouts(sourceFiles.Layouts);
 

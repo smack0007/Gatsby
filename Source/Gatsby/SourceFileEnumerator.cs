@@ -21,10 +21,11 @@ namespace Gatsby
 
             sourceFiles.Pages = pages;
             sourceFiles.StaticFiles = staticFiles;
-            sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"));
-            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"));
-            sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"));
-                        
+            sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"), "*.cshtml");
+            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"), "*.cshtml");
+            sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"), "*.cshtml");
+            sourceFiles.Plugins = FindFilesToProcess(Path.Combine(sourcePath, "_Plugins"), "*.cs");            
+
             return sourceFiles;
         }
 
@@ -38,12 +39,12 @@ namespace Gatsby
             return filePath;
         }
 
-        private static IEnumerable<SourceFilePath> FindFilesToProcess(string path)
+        private static IEnumerable<SourceFilePath> FindFilesToProcess(string path, string searchPattern)
         {
             if (!Directory.Exists(path))
                 return Enumerable.Empty<SourceFilePath>();
 
-            return Directory.EnumerateFiles(path, "*.cshtml", SearchOption.AllDirectories)
+            return Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories)
                 .Select(x => new SourceFilePath()
                     {
                         Path = x,

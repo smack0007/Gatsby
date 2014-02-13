@@ -32,6 +32,12 @@ namespace Gatsby
             set;
         }
 
+        public IEnumerable<SourceFilePath> Plugins
+        {
+            get;
+            set;
+        }
+
         public IEnumerable<SourceFilePath> StaticFiles
         {
             get;
