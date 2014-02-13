@@ -35,6 +35,9 @@
     <Reference Include="ComponentGlue">
       <HintPath>..\packages\ComponentGlue.1.0.0\lib\net40\ComponentGlue.dll</HintPath>
     </Reference>
+    <Reference Include="MoonShine">
+      <HintPath>..\..\Library\MoonShine.dll</HintPath>
+    </Reference>
     <Reference Include="RazorBurn">
       <HintPath>..\..\Library\RazorBurn.dll</HintPath>
     </Reference>
@@ -52,9 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Library\Markdown.cs">
-      <Link>Markdown.cs</Link>
-    </Compile>
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="CommandLineOptionsParser.cs" />
     <Compile Include="Config.cs" />
@@ -64,7 +64,6 @@
     <Compile Include="GatsbyAction.cs" />
     <Compile Include="GatsbyException.cs" />
     <Compile Include="Layout.cs" />
-    <Compile Include="MarkdownHighlighter.cs" />
     <Compile Include="MarkdownTransformer.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Post.cs" />
@@ -86,6 +85,12 @@
     <EmbeddedResource Include="Config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Library\libsundown.dll">
+      <Link>libsundown.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
