@@ -26,53 +26,70 @@ namespace Gatsby
         public void Build(Config config)
         {
             SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source);
-
-            foreach (var path in sourceFiles.Plugins)
-            {
-                this.pluginCompiler.Compile(path);
-            }
-
-            this.razorRenderer.LoadLayouts(sourceFiles.Layouts);
-
-            Site site = new Site();
-
-            foreach (var path in sourceFiles.Posts)
-            {
-                var post = this.razorRenderer.RenderPost(path, site);
-                site.Posts.Add(post);
-            }
-
-            foreach (var path in sourceFiles.Pages)
-            {
-                var page = this.razorRenderer.RenderPage(path, site);
-                site.Pages.Add(page);
-            }
-
+                                               
             if (Directory.Exists(config.Destination))
                 Directory.Delete(config.Destination, true);
 
             Directory.CreateDirectory(config.Destination);
 
-            foreach (var post in site.Posts)
+            this.pluginCompiler.RegisterAssemblyResolver();
+
+            try
             {
-                string content = this.razorRenderer.LayoutContent(post.Layout, post.Content, post, site);
+                foreach (var path in sourceFiles.Plugins)
+                {
+                    string pluginPath = Path.Combine(config.Destination, Path.GetFileNameWithoutExtension(path.Path) + ".dll");
+                    this.pluginCompiler.Compile(path, pluginPath);
+                    this.razorRenderer.AddPluginPath(pluginPath);
+                }
 
-                string destination = Path.Combine(config.Destination, post.Permalink);
+                this.razorRenderer.LoadLayouts(sourceFiles.Layouts);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(destination));
-                
-                File.WriteAllText(destination, content);
+                Site site = new Site();
+
+                foreach (var path in sourceFiles.Posts)
+                {
+                    var post = this.razorRenderer.RenderPost(path, site);
+                    site.Posts.Add(post);
+                }
+
+                foreach (var path in sourceFiles.Pages)
+                {
+                    var page = this.razorRenderer.RenderPage(path, site);
+                    site.Pages.Add(page);
+                }
+
+                foreach (var post in site.Posts)
+                {
+                    string content = this.razorRenderer.LayoutContent(post.Layout, post.Content, post, site);
+
+                    string destination = Path.Combine(config.Destination, post.Permalink);
+
+                    string directory = Path.GetDirectoryName(destination);
+                    if (!string.IsNullOrEmpty(directory))
+                        Directory.CreateDirectory(directory);
+
+                    File.WriteAllText(destination, content);
+                }
+
+                foreach (var page in site.Pages)
+                {
+                    string content = this.razorRenderer.LayoutContent(page.Layout, page.Content, page, site);
+
+                    string destination = Path.Combine(config.Destination, page.Permalink);
+
+                    string directory = Path.GetDirectoryName(destination);
+                    if (!string.IsNullOrEmpty(directory))
+                        Directory.CreateDirectory(directory);
+
+                    File.WriteAllText(destination, content);
+                }
+
+                this.pluginCompiler.DeleteAll();
             }
-
-            foreach (var page in site.Pages)
+            finally
             {
-                string content = this.razorRenderer.LayoutContent(page.Layout, page.Content, page, site);
-
-                string destination = Path.Combine(config.Destination, page.Permalink);
-
-                Directory.CreateDirectory(Path.GetDirectoryName(destination));
-
-                File.WriteAllText(destination, content);
+                this.pluginCompiler.UnregisterAssemblyResolver();
             }
         }
     }

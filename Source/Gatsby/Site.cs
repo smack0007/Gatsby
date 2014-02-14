@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Gatsby
 {
     public class Site
-    {
+    {        
         public List<Post> Posts
         {
             get;

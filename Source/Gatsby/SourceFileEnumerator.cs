@@ -47,9 +47,9 @@ namespace Gatsby
             return Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories)
                 .Select(x => new SourceFilePath()
                     {
-                        Path = x,
+                        Path = Path.GetFullPath(x),
                         RelativePath = CalculateRelativePath(x, path)
-                    });
+                    }).ToArray(); // ToArray is important to prevent delayed execution.
         }
 
         private static void Scan(List<SourceFilePath> pages, List<SourceFilePath> staticFiles, string path, string basePath)
@@ -70,7 +70,7 @@ namespace Gatsby
                 {
                     SourceFilePath sourceFilePath = new SourceFilePath()
                             {
-                                Path = filePath,
+                                Path = Path.GetFullPath(filePath),
                                 RelativePath = CalculateRelativePath(filePath, basePath)
                             };
 

@@ -23,6 +23,11 @@ namespace Gatsby
             this.markdownTransformer = markdownTransformer;
         }
 
+        public void AddPluginPath(string path)
+        {
+            this.compiler.ReferencedAssemblies.Add(Path.GetFullPath(path));
+        }
+
         public void LoadLayouts(IEnumerable<SourceFilePath> layoutPaths)
         {
             foreach (var path in layoutPaths)
