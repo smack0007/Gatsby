@@ -77,12 +77,12 @@ namespace Gatsby
 
         public void DeleteAll()
         {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+            //GC.Collect();
 
-            foreach (AssemblyData assemblyData in this.assemblies)
-                File.Delete(assemblyData.Path);
+            //foreach (AssemblyData assemblyData in this.assemblies)
+            //    File.Delete(assemblyData.Path);
         }
     }
 }

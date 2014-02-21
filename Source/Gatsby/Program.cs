@@ -13,17 +13,20 @@ namespace Gatsby
         ConfigGenerator configGenerator;
         ConfigParser configParser;
         SiteBuilder siteBuilder;
+        Logger logger;
 
         public Program(
             CommandLineOptionsParser optionsParser,
             ConfigGenerator configGenerator,
             ConfigParser configParser,
-            SiteBuilder siteBuilder)
+            SiteBuilder siteBuilder,
+            Logger logger)
         {
             this.optionsParser = optionsParser;
             this.configGenerator = configGenerator;
             this.configParser = configParser;
             this.siteBuilder = siteBuilder;
+            this.logger = logger;
         }
 
         public int Run(string[] args)
@@ -34,9 +37,9 @@ namespace Gatsby
             {
                 options = optionsParser.Parse(args);
             }
-            catch (InvalidOperationException ex)
+            catch (GatsbyException ex)
             {
-                Console.Error.WriteLine(ex.Message);
+                this.logger.Error(ex.Message);
                 return 1;
             }
 
@@ -52,20 +55,36 @@ namespace Gatsby
             {
                 config = this.configParser.Parse(options.ConfigPath);
             }
-            catch (InvalidOperationException ex)
+            catch (GatsbyException ex)
             {
-                Console.Error.WriteLine(ex.Message);
+                this.logger.Error(ex.Message);
                 return 2;
             }
 
             switch (options.Action)
             {
                 case GatsbyAction.Build:
-                    this.siteBuilder.Build(config);
+                    this.BuildSite(config);
                     break;
             }
 
             return 0;
+        }
+
+        private void BuildSite(Config config)
+        {
+            try
+            {
+                this.siteBuilder.Build(config);
+            }
+            catch (GatsbyException ex)
+            {
+                this.logger.Error("An error occured while building: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error("An unexpected error occured while building: {0}", ex.Message);
+            }
         }
 
         public static int Main(string[] args)

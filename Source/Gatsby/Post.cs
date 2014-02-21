@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public abstract class Post : RazorTemplate
+    public abstract class Post : GatsbyRazorTemplate
     {
         public Site Site
         {
@@ -63,7 +63,7 @@ namespace Gatsby
             private set;
         }
 
-        public dynamic Data
+        public DynamicDictionary Data
         {
             get;
             private set;

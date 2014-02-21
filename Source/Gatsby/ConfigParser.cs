@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,12 @@ namespace Gatsby
         {
             XDocument doc = XDocument.Load(configPath);
 
-            Config config = new Config();
+            string configDirectory = Path.GetDirectoryName(configPath);
 
-            config.Source = doc.Root.GetValue("Source");
-            config.Destination = doc.Root.GetValue("Destination");
+            Config config = new Config();
+            
+            config.Source =  Path.Combine(configDirectory, doc.Root.GetValue("Source"));
+            config.Destination = Path.Combine(configDirectory, doc.Root.GetValue("Destination"));
 
             return config;
         }

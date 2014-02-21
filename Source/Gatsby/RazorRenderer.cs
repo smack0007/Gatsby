@@ -10,22 +10,24 @@ namespace Gatsby
 {
     public class RazorRenderer
     {
+        MarkdownTransformer markdownTransformer;
+        Logger logger;
+
         RazorCompiler compiler;
         Dictionary<string, Layout> layouts;
-
-        MarkdownTransformer markdownTransformer;
-
-        public RazorRenderer(MarkdownTransformer markdownTransformer)
+                
+        public RazorRenderer(MarkdownTransformer markdownTransformer, Logger logger)
         {
-            this.compiler = new RazorCompiler(RazorLanguage.CSharp);
-            this.layouts = new Dictionary<string, Layout>();
-
             this.markdownTransformer = markdownTransformer;
+            this.logger = logger;
+
+            this.compiler = new RazorCompiler();
+            this.layouts = new Dictionary<string, Layout>();
         }
 
         public void AddPluginPath(string path)
         {
-            this.compiler.ReferencedAssemblies.Add(Path.GetFullPath(path));
+            this.compiler.ReferencedAssemblies.AddFile(Path.GetFullPath(path));
         }
 
         public void LoadLayouts(IEnumerable<SourceFilePath> layoutPaths)
@@ -80,6 +82,12 @@ namespace Gatsby
 
         public string LayoutContent(string layoutName, string content, Post page, Site site)
         {
+            if (!this.layouts.ContainsKey(layoutName))
+            {
+                this.logger.Error("Layout \"{0}\" was not found.", layoutName);
+                return content;
+            }
+
             var layout = this.layouts[layoutName];
 
             content = layout.Run(content, page, site);

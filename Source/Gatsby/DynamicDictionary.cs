@@ -7,9 +7,35 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public class DynamicDictionary : DynamicObject, IEnumerable<KeyValuePair<string, object>>
+    public class DynamicDictionary : DynamicObject, IDictionary<string, object>, IEnumerable<KeyValuePair<string, object>>
     {
-        Dictionary<string, object> data;
+        IDictionary<string, object> data;
+
+        public ICollection<string> Keys
+        {
+            get { return this.data.Keys; }
+        }
+
+        public ICollection<object> Values
+        {
+            get { return this.data.Values; }
+        }
+
+        public int Count
+        {
+            get { return this.data.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return this.data.IsReadOnly; }
+        }
+
+        public object this[string key]
+        {
+            get { return this.data[key]; }
+            set { this.data[key] = value; }
+        }
 
         public DynamicDictionary()
             : base()
@@ -41,6 +67,51 @@ namespace Gatsby
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public void Add(string key, object value)
+        {
+            this.data.Add(key, value);
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return this.data.ContainsKey(key);
+        }
+
+        public bool Remove(string key)
+        {
+            return this.data.Remove(key);
+        }
+
+        public bool TryGetValue(string key, out object value)
+        {
+            return this.data.TryGetValue(key, out value);
+        }
+                                
+        public void Add(KeyValuePair<string, object> item)
+        {
+            this.data.Add(item);
+        }
+
+        public void Clear()
+        {
+            this.data.Clear();
+        }
+
+        public bool Contains(KeyValuePair<string, object> item)
+        {
+            return this.data.ContainsKey(item.Key);
+        }
+
+        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+        {
+            this.data.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(KeyValuePair<string, object> item)
+        {
+            return this.data.Remove(item);
         }
     }
 }

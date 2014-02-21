@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public abstract class Layout : RazorTemplate
+    public abstract class Layout : GatsbyRazorTemplate
     {
         public string Content
         {

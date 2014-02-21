@@ -62,17 +62,17 @@ namespace Gatsby
                 if (file.StartsWith("_"))
                     continue;
 
-                if (Directory.Exists(file))
+                if (Directory.Exists(filePath))
                 {
-                    Scan(pages, staticFiles, file, basePath);
+                    Scan(pages, staticFiles, filePath, basePath);
                 }
                 else
                 {
                     SourceFilePath sourceFilePath = new SourceFilePath()
-                            {
-                                Path = Path.GetFullPath(filePath),
-                                RelativePath = CalculateRelativePath(filePath, basePath)
-                            };
+                        {
+                            Path = Path.GetFullPath(filePath),
+                            RelativePath = CalculateRelativePath(filePath, basePath)
+                        };
 
                     if (Path.GetExtension(file) == ".cshtml")
                     {

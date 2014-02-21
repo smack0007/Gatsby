@@ -84,7 +84,9 @@
     <Compile Include="DynamicDictionary.cs" />
     <Compile Include="GatsbyAction.cs" />
     <Compile Include="GatsbyException.cs" />
+    <Compile Include="GatsbyRazorTemplate.cs" />
     <Compile Include="Layout.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="MarkdownTransformer.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PluginCompiler.cs" />
