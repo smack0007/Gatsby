@@ -23,5 +23,15 @@ namespace Gatsby
 
             return null;
         }
+
+        public static IEnumerable<XElement> GetChildElements(this XElement element, XName name)
+        {
+            var element2 = element.Element(name);
+
+            if (element2 == null)
+                return Enumerable.Empty<XElement>();
+
+            return element2.Elements();
+        }
     }
 }

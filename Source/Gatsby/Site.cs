@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 namespace Gatsby
 {
     public class Site
-    {        
+    {
+        public string BaseUrl
+        {
+            get;
+            private set;
+        }
+
         public List<Post> Posts
         {
             get;

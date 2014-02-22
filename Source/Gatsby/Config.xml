@@ -2,4 +2,10 @@
 <Gatsby>
   <Source>.</Source>
   <Destination>_Site</Destination>
+  <BaseUrl>/</BaseUrl>
+  <ExcludePatterns>
+    <ExcludePattern>.git</ExcludePattern>
+    <ExcludePattern>.gitignore</ExcludePattern>
+    <ExcludePattern>.gitattributes</ExcludePattern>
+  </ExcludePatterns>
 </Gatsby>

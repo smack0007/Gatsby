@@ -8,7 +8,7 @@ namespace Gatsby
 {
     public struct SourceFilePath
     {
-        public string Path
+        public string AbsolutePath
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace Gatsby
 
         public override string ToString()
         {
-            return this.Path;
+            return this.AbsolutePath;
         }
     }
 }

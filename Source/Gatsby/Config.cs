@@ -19,5 +19,22 @@ namespace Gatsby
             get;
             set;
         }
+
+        public string BaseUrl
+        {
+            get;
+            set;
+        }
+
+        public List<string> ExcludePatterns
+        {
+            get;
+            set;
+        }
+
+        public Config()
+        {
+            this.ExcludePatterns = new List<string>();
+        }
     }
 }

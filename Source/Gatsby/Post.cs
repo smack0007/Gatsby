@@ -1,6 +1,7 @@
 ﻿using RazorBurn;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,9 @@ namespace Gatsby
 {
     public abstract class Post : GatsbyRazorTemplate
     {
-        public Site Site
+        string baseUrl;
+
+        public string RelativePath
         {
             get;
             private set;
@@ -77,14 +80,15 @@ namespace Gatsby
             this.Data = new DynamicDictionary();
         }
         
-        internal void Run(MarkdownTransformer markdownTransformer, Site site)
+        internal void Run(MarkdownTransformer markdownTransformer, string relativePath, Site site)
         {
             if (this.Content != null)
                 throw new InvalidOperationException("Template has already been run.");
 
-            this.Site = site;
+            this.RelativePath = relativePath;
+            this.Init(site);
+                        
             this.Content = this.ExecuteTemplate();
-
             this.Content = markdownTransformer.Transform(this.Content);
         }
     }

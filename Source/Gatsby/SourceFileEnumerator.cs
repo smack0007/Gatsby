@@ -11,20 +11,20 @@ namespace Gatsby
     {
         private static string DirectorySeperator = Path.DirectorySeparatorChar.ToString();
 
-        public SourceFiles Enumerate(string sourcePath)
+        public SourceFiles Enumerate(string sourcePath, List<string> excludePatterns)
         {
             SourceFiles sourceFiles = new SourceFiles();
 
             List<SourceFilePath> pages = new List<SourceFilePath>();
             List<SourceFilePath> staticFiles = new List<SourceFilePath>();
-            Scan(pages, staticFiles, sourcePath, sourcePath);
+            Scan(pages, staticFiles, sourcePath, sourcePath, excludePatterns);
 
             sourceFiles.Pages = pages;
             sourceFiles.StaticFiles = staticFiles;
-            sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"), "*.cshtml");
-            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"), "*.cshtml");
-            sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"), "*.cshtml");
-            sourceFiles.Plugins = FindFilesToProcess(Path.Combine(sourcePath, "_Plugins"), "*.cs");            
+            sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"), "*.cshtml", excludePatterns);
+            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"), "*.cshtml", excludePatterns);
+            sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"), "*.cshtml", excludePatterns);
+            sourceFiles.Plugins = FindFilesToProcess(Path.Combine(sourcePath, "_Plugins"), "*.cs", excludePatterns);            
 
             return sourceFiles;
         }
@@ -39,39 +39,45 @@ namespace Gatsby
             return filePath;
         }
 
-        private static IEnumerable<SourceFilePath> FindFilesToProcess(string path, string searchPattern)
+        private static IEnumerable<SourceFilePath> FindFilesToProcess(string path, string searchPattern, List<string> excludePatterns)
         {
             if (!Directory.Exists(path))
                 return Enumerable.Empty<SourceFilePath>();
 
+            var excludeFiles = excludePatterns.SelectMany(x => Directory.EnumerateFiles(path, x, SearchOption.AllDirectories));
+
             return Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories)
+                .Where(x => !excludeFiles.Contains(x))
                 .Select(x => new SourceFilePath()
                     {
-                        Path = Path.GetFullPath(x),
+                        AbsolutePath = Path.GetFullPath(x),
                         RelativePath = CalculateRelativePath(x, path)
                     }).ToArray(); // ToArray is important to prevent delayed execution.
         }
 
-        private static void Scan(List<SourceFilePath> pages, List<SourceFilePath> staticFiles, string path, string basePath)
+        private static void Scan(List<SourceFilePath> pages, List<SourceFilePath> staticFiles, string path, string basePath, List<string> excludePatterns)
         {
-            foreach (var filePath in Directory.EnumerateFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly))
+            var excludeFileNames = excludePatterns.SelectMany(x => Directory.EnumerateFileSystemEntries(path, x, SearchOption.TopDirectoryOnly));
+            var fileNames = Directory.EnumerateFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly).Where(x => !excludeFileNames.Contains(x));
+
+            foreach (var fileName in fileNames)
             {
-                string file = Path.GetFileName(filePath);
+                string file = Path.GetFileName(fileName);
 
                 // Ignore anything that starts with an "_".
                 if (file.StartsWith("_"))
                     continue;
 
-                if (Directory.Exists(filePath))
+                if (Directory.Exists(fileName))
                 {
-                    Scan(pages, staticFiles, filePath, basePath);
+                    Scan(pages, staticFiles, fileName, basePath, excludePatterns);
                 }
                 else
                 {
                     SourceFilePath sourceFilePath = new SourceFilePath()
                         {
-                            Path = Path.GetFullPath(filePath),
-                            RelativePath = CalculateRelativePath(filePath, basePath)
+                            AbsolutePath = Path.GetFullPath(fileName),
+                            RelativePath = CalculateRelativePath(fileName, basePath)
                         };
 
                     if (Path.GetExtension(file) == ".cshtml")

@@ -48,9 +48,9 @@ namespace Gatsby
 
         public void Compile(SourceFilePath path, string outputPath)
         {
-            SyntaxTree syntaxTree = SyntaxTree.ParseFile(path.Path);
+            SyntaxTree syntaxTree = SyntaxTree.ParseFile(path.AbsolutePath);
 
-            string assemblyName = "GatsbyPlugin_" + Path.GetFileNameWithoutExtension(path.Path);
+            string assemblyName = "GatsbyPlugin_" + Path.GetFileNameWithoutExtension(path.AbsolutePath);
 
             var compilation = Compilation.Create(assemblyName, new CompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateAssemblyReference("mscorlib"))
@@ -63,7 +63,7 @@ namespace Gatsby
                 if (!result.Success)
                 {
                     string message = string.Join(Environment.NewLine, result.Diagnostics);
-                    throw new GatsbyException(string.Format("Failed to compile plugin {0}:\n{1}", path.Path, message));
+                    throw new GatsbyException(string.Format("Failed to compile plugin {0}:\n{1}", path.AbsolutePath, message));
                 }
             }
 

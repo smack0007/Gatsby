@@ -28,7 +28,7 @@ namespace Gatsby
 
         public void Build(Config config)
         {
-            SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source);
+            SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source, config.ExcludePatterns);
                                                
             if (Directory.Exists(config.Destination))
                 Directory.Delete(config.Destination, true);
@@ -41,7 +41,7 @@ namespace Gatsby
             {
                 foreach (var path in sourceFiles.Plugins)
                 {
-                    string pluginPath = Path.Combine(config.Destination, Path.GetFileNameWithoutExtension(path.Path) + ".dll");
+                    string pluginPath = Path.Combine(config.Destination, Path.GetFileNameWithoutExtension(path.AbsolutePath) + ".dll");
                     this.pluginCompiler.Compile(path, pluginPath);
                     this.razorRenderer.AddPluginPath(pluginPath);
                 }
@@ -96,7 +96,7 @@ namespace Gatsby
                     if (!string.IsNullOrEmpty(directory))
                         Directory.CreateDirectory(directory);
 
-                    File.Copy(staticFile.Path, destination);
+                    File.Copy(staticFile.AbsolutePath, destination);
                 }
 
                 this.pluginCompiler.DeleteAll();

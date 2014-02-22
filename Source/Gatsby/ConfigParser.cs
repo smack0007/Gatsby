@@ -20,6 +20,12 @@ namespace Gatsby
             
             config.Source =  Path.Combine(configDirectory, doc.Root.GetValue("Source"));
             config.Destination = Path.Combine(configDirectory, doc.Root.GetValue("Destination"));
+            config.BaseUrl = doc.Root.GetValue("BaseUrl");
+            
+            foreach (var excludePattern in doc.Root.GetChildElements("ExcludePatterns"))
+            {
+                config.ExcludePatterns.Add(excludePattern.Value);
+            }
 
             return config;
         }

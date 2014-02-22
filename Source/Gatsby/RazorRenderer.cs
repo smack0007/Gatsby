@@ -36,12 +36,12 @@ namespace Gatsby
             {
                 try
                 {
-                    var layout = this.compiler.Compile<Layout>(File.ReadAllText(path.Path));
+                    var layout = this.compiler.Compile<Layout>(File.ReadAllText(path.AbsolutePath));
                     layouts.Add(Path.GetFileNameWithoutExtension(path.RelativePath), layout);
                 }
                 catch (RazorCompilationException ex)
                 {
-                    throw new GatsbyException(string.Format("Failed while compiling layout {0}:\n\t{1}", path.Path, string.Join("\n\t", ex.Errors)));
+                    throw new GatsbyException(string.Format("Failed while compiling layout {0}:\n\t{1}", path.AbsolutePath, string.Join("\n\t", ex.Errors)));
                 }
             }
         }
@@ -52,12 +52,12 @@ namespace Gatsby
 
             try
             {
-                post = this.compiler.Compile<Post>(File.ReadAllText(path.Path));
-                post.Run(this.markdownTransformer, site);                
+                post = this.compiler.Compile<Post>(File.ReadAllText(path.AbsolutePath));
+                post.Run(this.markdownTransformer, path.RelativePath, site);                
             }
             catch (RazorCompilationException ex)
             {
-                throw new GatsbyException(string.Format("Failed while compiling post {0}:\n\t{1}", path.Path, string.Join("\n\t", ex.Errors)));
+                throw new GatsbyException(string.Format("Failed while compiling post {0}:\n\t{1}", path.AbsolutePath, string.Join("\n\t", ex.Errors)));
             }
 
             return post;
@@ -69,12 +69,12 @@ namespace Gatsby
 
             try
             {
-                page = this.compiler.Compile<Page>(File.ReadAllText(path.Path));
-                page.Run(this.markdownTransformer, site);
+                page = this.compiler.Compile<Page>(File.ReadAllText(path.AbsolutePath));
+                page.Run(this.markdownTransformer, path.RelativePath, site);
             }
             catch (RazorCompilationException ex)
             {
-                throw new GatsbyException(string.Format("Failed while compiling page {0}:\n\t{1}", path.Path, string.Join("\n\t", ex.Errors)));
+                throw new GatsbyException(string.Format("Failed while compiling page {0}:\n\t{1}", path.AbsolutePath, string.Join("\n\t", ex.Errors)));
             }
 
             return page;

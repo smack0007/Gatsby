@@ -21,12 +21,6 @@ namespace Gatsby
             private set;
         }
 
-        public Site Site
-        {
-            get;
-            private set;
-        }
-
         public string Parent
         {
             get;
@@ -37,7 +31,8 @@ namespace Gatsby
         {
             this.Content = content;
             this.Page = page;
-            this.Site = site;
+
+            this.Init(site);
 
             return this.ExecuteTemplate();
         }
