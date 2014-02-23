@@ -16,7 +16,7 @@ namespace Gatsby
                 };
 
             if (args.Length == 0)
-                throw new InvalidOperationException("Please provide an action to perform.");
+                throw new GatsbyException("Please provide an action to perform.");
 
             switch (args[0].ToLower())
             {
@@ -28,8 +28,12 @@ namespace Gatsby
                     options.Action = GatsbyAction.Build;
                     break;
 
+                case "serve":
+                    options.Action = GatsbyAction.Serve;
+                    break;
+
                 default:
-                    throw new InvalidOperationException("Unknown action.");
+                    throw new GatsbyException("Unknown action.");
             }
 
             for (int i = 1; i < args.Length; i++)
@@ -50,7 +54,7 @@ namespace Gatsby
         private static void ThrowIfFlagMissingValue(string[] args, int flagIndex)
         {
             if (flagIndex + 1 >= args.Length)
-                throw new InvalidOperationException(string.Format("Invalid arguments. Flag {0} missing value.", args[flagIndex]));
+                throw new GatsbyException(string.Format("Invalid arguments. Flag {0} missing value.", args[flagIndex]));
         }
     }
 }

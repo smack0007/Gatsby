@@ -22,13 +22,13 @@ namespace Gatsby.Tests
         [Test]
         public void Empty_Args_Is_Error()
         {
-            var options = this.parser.Invoking(x => x.Parse(new string[] { })).ShouldThrow<InvalidOperationException>();
+            var options = this.parser.Invoking(x => x.Parse(new string[] { })).ShouldThrow<GatsbyException>();
         }
 
         [Test]
         public void Unknown_Action_Is_Error()
         {
-            var options = this.parser.Invoking(x => x.Parse(new string[] { "foo" })).ShouldThrow<InvalidOperationException>();
+            var options = this.parser.Invoking(x => x.Parse(new string[] { "foo" })).ShouldThrow<GatsbyException>();
         }
 
         [Test]
@@ -80,6 +80,30 @@ namespace Gatsby.Tests
         }
 
         [Test]
+        public void Serve_Written_In_Lower_Case_Is_Parsed_Correctly()
+        {
+            var options = this.parser.Parse(new string[] { "serve" });
+
+            options.Action.Should().Be(GatsbyAction.Serve);
+        }
+
+        [Test]
+        public void Serve_Written_In_Upper_Case_Is_Parsed_Correctly()
+        {
+            var options = this.parser.Parse(new string[] { "SERVE" });
+
+            options.Action.Should().Be(GatsbyAction.Serve);
+        }
+
+        [Test]
+        public void Serve_Written_In_Mixed_Case_Is_Parsed_Correctly()
+        {
+            var options = this.parser.Parse(new string[] { "SeRvE" });
+
+            options.Action.Should().Be(GatsbyAction.Serve);
+        }
+
+        [Test]
         public void When_Config_Flag_Not_Present_Defaut_Is_Set()
         {
             var options = this.parser.Parse(new string[] { "build" });
@@ -90,7 +114,7 @@ namespace Gatsby.Tests
         [Test]
         public void Config_Flag_Without_Value_Is_Error()
         {
-            this.parser.Invoking(x => x.Parse(new string[] { "build", "--config" })).ShouldThrow<InvalidOperationException>();
+            this.parser.Invoking(x => x.Parse(new string[] { "build", "--config" })).ShouldThrow<GatsbyException>();
         }
 
         [Test]

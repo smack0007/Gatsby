@@ -10,6 +10,8 @@ namespace Gatsby
     {
         Generate,
 
-        Build
+        Build,
+
+        Serve
     }
 }

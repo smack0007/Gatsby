@@ -65,6 +65,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll</HintPath>
@@ -85,6 +86,7 @@
     <Compile Include="GatsbyAction.cs" />
     <Compile Include="GatsbyException.cs" />
     <Compile Include="GatsbyRazorTemplate.cs" />
+    <Compile Include="HttpServer.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MarkdownTransformer.cs" />
