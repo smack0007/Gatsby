@@ -91,6 +91,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="MarkdownTransformer.cs" />
     <Compile Include="Page.cs" />
+    <Compile Include="PaginationPage.cs" />
     <Compile Include="PluginCompiler.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="Program.cs" />

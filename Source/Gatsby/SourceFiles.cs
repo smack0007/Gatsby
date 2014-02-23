@@ -20,6 +20,12 @@ namespace Gatsby
             set;
         }
 
+        public IEnumerable<SourceFilePath> Paginators
+        {
+            get;
+            set;
+        }
+
         public IEnumerable<SourceFilePath> Layouts
         {
             get;

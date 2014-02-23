@@ -22,6 +22,8 @@ namespace Gatsby
             this.logger = logger;
 
             this.compiler = new RazorCompiler();
+            this.compiler.NamespaceImports.Add("System.Linq");
+
             this.layouts = new Dictionary<string, Layout>();
         }
 
@@ -78,6 +80,39 @@ namespace Gatsby
             }
 
             return page;
+        }
+
+        public List<PaginationPage> RenderPaginator(SourceFilePath path, Site site)
+        {
+            List<PaginationPage> pagintors = new List<PaginationPage>();
+            RazorTemplateFactory<PaginationPage> factory = null;
+
+            try
+            {
+                factory = this.compiler.CompileFactory<PaginationPage>(File.ReadAllText(path.AbsolutePath));
+            }
+            catch (RazorCompilationException ex)
+            {
+                throw new GatsbyException(string.Format("Failed while compiling paginator {0}:\n\t{1}", path.AbsolutePath, string.Join("\n\t", ex.Errors)));
+            }
+
+            int pageNumber = 1;
+
+            while (true)
+            {
+                var template = factory.Create();
+                template.PageNumber = pageNumber;
+                template.Run(this.markdownTransformer, path.RelativePath, site);
+
+                pagintors.Add(template);
+
+                if (template.PaginationFinished)
+                    break;
+
+                pageNumber++;
+            }
+
+            return pagintors;
         }
 
         public string LayoutContent(string layoutName, string content, Post page, Site site)

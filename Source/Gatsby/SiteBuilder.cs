@@ -62,6 +62,12 @@ namespace Gatsby
                     site.Pages.Add(page);
                 }
 
+                foreach (var path in sourceFiles.Paginators)
+                {
+                    var pages = this.razorRenderer.RenderPaginator(path, site);
+                    site.Pages.AddRange(pages);
+                }
+
                 foreach (var post in site.Posts)
                 {
                     string content = this.razorRenderer.LayoutContent(post.Layout, post.Content, post, site);

@@ -22,6 +22,7 @@ namespace Gatsby
             sourceFiles.Pages = pages;
             sourceFiles.StaticFiles = staticFiles;
             sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"), "*.cshtml", excludePatterns);
+            sourceFiles.Paginators = FindFilesToProcess(Path.Combine(sourcePath, "_Paginators"), "*.cshtml", excludePatterns);
             sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"), "*.cshtml", excludePatterns);
             sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"), "*.cshtml", excludePatterns);
             sourceFiles.Plugins = FindFilesToProcess(Path.Combine(sourcePath, "_Plugins"), "*.cs", excludePatterns);            
