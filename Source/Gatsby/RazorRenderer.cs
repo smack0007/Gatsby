@@ -82,14 +82,14 @@ namespace Gatsby
             return page;
         }
 
-        public List<PaginationPage> RenderPaginator(SourceFilePath path, Site site)
+        public List<PaginatorPage> RenderPaginator(SourceFilePath path, Site site)
         {
-            List<PaginationPage> pagintors = new List<PaginationPage>();
-            RazorTemplateFactory<PaginationPage> factory = null;
+            List<PaginatorPage> pagintors = new List<PaginatorPage>();
+            RazorTemplateFactory<PaginatorPage> factory = null;
 
             try
             {
-                factory = this.compiler.CompileFactory<PaginationPage>(File.ReadAllText(path.AbsolutePath));
+                factory = this.compiler.CompileFactory<PaginatorPage>(File.ReadAllText(path.AbsolutePath));
             }
             catch (RazorCompilationException ex)
             {
@@ -115,7 +115,7 @@ namespace Gatsby
             return pagintors;
         }
 
-        public string LayoutContent(string layoutName, string content, Post page, Site site)
+        public string LayoutContent(string layoutName, string content, SiteContent page, Site site)
         {
             if (!this.layouts.ContainsKey(layoutName))
             {

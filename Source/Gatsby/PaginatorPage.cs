@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public abstract class PaginationPage : Page
+    public abstract class PaginatorPage : Page
     {
         public int PageNumber
         {

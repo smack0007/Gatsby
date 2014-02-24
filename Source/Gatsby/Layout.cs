@@ -15,7 +15,7 @@ namespace Gatsby
             private set;
         }
 
-        public Post Page
+        public SiteContent Page
         {
             get;
             private set;
@@ -27,12 +27,12 @@ namespace Gatsby
             set;
         }
 
-        public string Run(string content, Post page, Site site)
+        public string Run(string content, SiteContent page, Site site)
         {
             this.Content = content;
             this.Page = page;
 
-            this.Init(site);
+            this.InitGatsbyRazorTemplate(site);
 
             return this.ExecuteTemplate();
         }

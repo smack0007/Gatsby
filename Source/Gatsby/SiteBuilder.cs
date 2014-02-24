@@ -26,6 +26,19 @@ namespace Gatsby
             this.logger = logger;
         }
 
+        private void WriteContent(Config config, SiteContent page, Site site)
+        {
+            string content = this.razorRenderer.LayoutContent(page.Layout, page.Content, page, site);
+
+            string destination = Path.Combine(config.Destination, page.Permalink);
+
+            string directory = Path.GetDirectoryName(destination);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(destination, content);
+        }
+
         public void Build(Config config)
         {
             SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source, config.ExcludePatterns);
@@ -65,33 +78,22 @@ namespace Gatsby
                 foreach (var path in sourceFiles.Paginators)
                 {
                     var pages = this.razorRenderer.RenderPaginator(path, site);
-                    site.Pages.AddRange(pages);
+                    site.PaginatorPages.AddRange(pages);
                 }
 
                 foreach (var post in site.Posts)
                 {
-                    string content = this.razorRenderer.LayoutContent(post.Layout, post.Content, post, site);
-
-                    string destination = Path.Combine(config.Destination, post.Permalink);
-
-                    string directory = Path.GetDirectoryName(destination);
-                    if (!string.IsNullOrEmpty(directory))
-                        Directory.CreateDirectory(directory);
-
-                    File.WriteAllText(destination, content);
+                    this.WriteContent(config, post, site);
                 }
 
                 foreach (var page in site.Pages)
                 {
-                    string content = this.razorRenderer.LayoutContent(page.Layout, page.Content, page, site);
+                    this.WriteContent(config, page, site);
+                }
 
-                    string destination = Path.Combine(config.Destination, page.Permalink);
-
-                    string directory = Path.GetDirectoryName(destination);
-                    if (!string.IsNullOrEmpty(directory))
-                        Directory.CreateDirectory(directory);
-
-                    File.WriteAllText(destination, content);
+                foreach (var page in site.PaginatorPages)
+                {
+                    this.WriteContent(config, page, site);
                 }
 
                 foreach (var staticFile in sourceFiles.StaticFiles)

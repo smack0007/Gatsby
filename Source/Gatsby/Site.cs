@@ -26,10 +26,17 @@ namespace Gatsby
             private set;
         }
 
+        public List<PaginatorPage> PaginatorPages
+        {
+            get;
+            private set;
+        }
+
         public Site()
         {
             this.Posts = new List<Post>();
             this.Pages = new List<Page>();
+            this.PaginatorPages = new List<PaginatorPage>();
         }
     }
 }

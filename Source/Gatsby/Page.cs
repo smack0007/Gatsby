@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public abstract class Page : Post
+    public abstract class Page : SiteContent
     {
     }
 }
