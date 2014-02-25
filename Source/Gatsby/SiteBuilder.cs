@@ -65,19 +65,21 @@ namespace Gatsby
 
                 foreach (var path in sourceFiles.Posts)
                 {
-                    var post = this.razorRenderer.RenderPost(path, site);
+                    var post = this.razorRenderer.RenderPost(config, path, site);
                     site.Posts.Add(post);
                 }
 
+                site.Posts.Sort((x, y) => x.Date.CompareTo(y.Date) * -1);
+
                 foreach (var path in sourceFiles.Pages)
                 {
-                    var page = this.razorRenderer.RenderPage(path, site);
+                    var page = this.razorRenderer.RenderPage(config, path, site);
                     site.Pages.Add(page);
                 }
 
                 foreach (var path in sourceFiles.Paginators)
                 {
-                    var pages = this.razorRenderer.RenderPaginator(path, site);
+                    var pages = this.razorRenderer.RenderPaginator(config, path, site);
                     site.PaginatorPages.AddRange(pages);
                 }
 

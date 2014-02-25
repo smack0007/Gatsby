@@ -27,6 +27,8 @@ namespace Gatsby
                 config.ExcludePatterns.Add(excludePattern.Value);
             }
 
+            config.ExcerptSeparator = doc.Root.GetValue("ExcerptSeparator");
+
             return config;
         }
     }

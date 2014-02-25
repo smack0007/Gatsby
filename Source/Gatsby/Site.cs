@@ -20,6 +20,16 @@ namespace Gatsby
             private set;
         }
 
+        public IEnumerable<string> Categories
+        {
+            get { return this.Posts.SelectMany(x => x.Categories); }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get { return this.Posts.SelectMany(x => x.Tags); }
+        }
+
         public List<Page> Pages
         {
             get;

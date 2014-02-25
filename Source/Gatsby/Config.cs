@@ -32,6 +32,12 @@ namespace Gatsby
             set;
         }
 
+        public string ExcerptSeparator
+        {
+            get;
+            set;
+        }
+
         public Config()
         {
             this.ExcludePatterns = new List<string>();

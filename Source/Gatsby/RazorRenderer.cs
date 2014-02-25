@@ -48,14 +48,14 @@ namespace Gatsby
             }
         }
 
-        public Post RenderPost(SourceFilePath path, Site site)
+        public Post RenderPost(Config config, SourceFilePath path, Site site)
         {
             Post post = null;
 
             try
             {
                 post = this.compiler.Compile<Post>(File.ReadAllText(path.AbsolutePath));
-                post.Run(this.markdownTransformer, path.RelativePath, site);                
+                post.Run(config, this.markdownTransformer, path.RelativePath, site);                
             }
             catch (RazorCompilationException ex)
             {
@@ -65,14 +65,14 @@ namespace Gatsby
             return post;
         }
 
-        public Page RenderPage(SourceFilePath path, Site site)
+        public Page RenderPage(Config config, SourceFilePath path, Site site)
         {
             Page page = null;
 
             try
             {
                 page = this.compiler.Compile<Page>(File.ReadAllText(path.AbsolutePath));
-                page.Run(this.markdownTransformer, path.RelativePath, site);
+                page.Run(config, this.markdownTransformer, path.RelativePath, site);
             }
             catch (RazorCompilationException ex)
             {
@@ -82,7 +82,7 @@ namespace Gatsby
             return page;
         }
 
-        public List<PaginatorPage> RenderPaginator(SourceFilePath path, Site site)
+        public List<PaginatorPage> RenderPaginator(Config config, SourceFilePath path, Site site)
         {
             List<PaginatorPage> pagintors = new List<PaginatorPage>();
             RazorTemplateFactory<PaginatorPage> factory = null;
@@ -102,7 +102,7 @@ namespace Gatsby
             {
                 var template = factory.Create();
                 template.PageNumber = pageNumber;
-                template.Run(this.markdownTransformer, path.RelativePath, site);
+                template.Run(config, this.markdownTransformer, path.RelativePath, site);
 
                 pagintors.Add(template);
 

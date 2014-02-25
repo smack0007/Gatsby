@@ -63,7 +63,7 @@ namespace Gatsby
             this.Data = new DynamicDictionary();
         }
 
-        internal void Run(MarkdownTransformer markdownTransformer, string relativePath, Site site)
+        internal virtual void Run(Config config, MarkdownTransformer markdownTransformer, string relativePath, Site site)
         {
             if (this.Content != null)
                 throw new InvalidOperationException("Template has already been run.");

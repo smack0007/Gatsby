@@ -8,4 +8,5 @@
     <ExcludePattern>.gitignore</ExcludePattern>
     <ExcludePattern>.gitattributes</ExcludePattern>
   </ExcludePatterns>
+  <ExcerptSeparator><![CDATA[<!--more-->]]></ExcerptSeparator>
 </Gatsby>
