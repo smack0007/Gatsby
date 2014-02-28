@@ -50,6 +50,12 @@ namespace Gatsby
             protected set;
         }
 
+        public bool IsMarkdown
+        {
+            get;
+            protected set;
+        }
+
         public DynamicDictionary Data
         {
             get;
@@ -60,6 +66,7 @@ namespace Gatsby
             : base()
         {
             this.Published = true;
+            this.IsMarkdown = true;
             this.Data = new DynamicDictionary();
         }
 
@@ -72,7 +79,9 @@ namespace Gatsby
             this.InitGatsbyRazorTemplate(site);
 
             this.Content = this.ExecuteTemplate();
-            this.Content = markdownTransformer.Transform(this.Content);
+
+            if (this.IsMarkdown)
+                this.Content = markdownTransformer.Transform(this.Content);
         }
     }
 }

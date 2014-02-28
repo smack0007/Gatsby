@@ -22,12 +22,12 @@ namespace Gatsby
 
         public IEnumerable<string> Categories
         {
-            get { return this.Posts.SelectMany(x => x.Categories); }
+            get { return this.Posts.SelectMany(x => x.Categories).Distinct().OrderBy(x => x); }
         }
 
         public IEnumerable<string> Tags
         {
-            get { return this.Posts.SelectMany(x => x.Tags); }
+            get { return this.Posts.SelectMany(x => x.Tags).Distinct().OrderBy(x => x); }
         }
 
         public List<Page> Pages

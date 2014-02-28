@@ -46,6 +46,9 @@ namespace Gatsby
                         if (url.Length == 0)
                             url = "index.html";
 
+                        if (url.EndsWith("/"))
+                            url += "index.html";
+
                         string filePath = Path.Combine(destination, url.Replace('/', Path.DirectorySeparatorChar));
 
                         if (File.Exists(filePath))

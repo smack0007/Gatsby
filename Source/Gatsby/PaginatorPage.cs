@@ -19,5 +19,11 @@ namespace Gatsby
             get;
             protected set;
         }
+
+        public PaginatorPage()
+            : base()
+        {
+            this.IsMarkdown = false;
+        }
     }
 }
