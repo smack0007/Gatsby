@@ -8,6 +8,12 @@ namespace Gatsby
 {
     public class Site
     {
+        public PluginManager Plugins
+        {
+            get;
+            private set;
+        }
+
         public string BaseUrl
         {
             get;
@@ -44,6 +50,7 @@ namespace Gatsby
 
         public Site()
         {
+            this.Plugins = new PluginManager();
             this.Posts = new List<Post>();
             this.Pages = new List<Page>();
             this.PaginatorPages = new List<PaginatorPage>();

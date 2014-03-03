@@ -46,7 +46,7 @@ namespace Gatsby
             return null;
         }
 
-        public void Compile(SourceFilePath path, string outputPath)
+        public void Compile(SourceFilePath path, string outputPath, PluginManager pluginManager)
         {
             SyntaxTree syntaxTree = SyntaxTree.ParseFile(path.AbsolutePath);
 
@@ -54,6 +54,7 @@ namespace Gatsby
 
             var compilation = Compilation.Create(assemblyName, new CompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateAssemblyReference("mscorlib"))
+                .AddReferences(new MetadataFileReference(this.GetType().Assembly.Location))
                 .AddSyntaxTrees(syntaxTree);
 
             using (FileStream stream = new FileStream(outputPath, FileMode.Create))
@@ -72,7 +73,10 @@ namespace Gatsby
                 {
                     Assembly = assembly,
                     Path = outputPath
-                });            
+                });
+
+            foreach (Type type in assembly.GetTypes())
+                pluginManager.Register(type);
         }
 
         public void DeleteAll()

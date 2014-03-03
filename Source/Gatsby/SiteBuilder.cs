@@ -52,16 +52,16 @@ namespace Gatsby
 
             try
             {
+                Site site = new Site();
+
                 foreach (var path in sourceFiles.Plugins)
                 {
                     string pluginPath = Path.Combine(config.Destination, Path.GetFileNameWithoutExtension(path.AbsolutePath) + ".dll");
-                    this.pluginCompiler.Compile(path, pluginPath);
+                    this.pluginCompiler.Compile(path, pluginPath, site.Plugins);
                     this.razorRenderer.AddPluginPath(pluginPath);
                 }
                 
                 this.razorRenderer.LoadLayouts(sourceFiles.Layouts);
-
-                Site site = new Site();
 
                 foreach (var path in sourceFiles.Posts)
                 {
@@ -76,6 +76,8 @@ namespace Gatsby
                     var page = this.razorRenderer.RenderPage(config, path, site);
                     site.Pages.Add(page);
                 }
+
+                site.Plugins.BeforePagination(site);
 
                 foreach (var path in sourceFiles.Paginators)
                 {

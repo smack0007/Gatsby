@@ -14,7 +14,7 @@ namespace Gatsby
             get;
             private set;
         }
-
+        
         internal void InitGatsbyRazorTemplate(Site site)
         {
             this.Site = site;
