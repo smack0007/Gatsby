@@ -16,10 +16,10 @@ namespace Gatsby
             private set;
         }
 
-        public List<string> Categories
+        public string Category
         {
             get;
-            private set;
+            set;
         }
 
         public List<string> Tags
@@ -30,7 +30,6 @@ namespace Gatsby
 
         public Post()
         {
-            this.Categories = new List<string>();
             this.Tags = new List<string>();
         }
 

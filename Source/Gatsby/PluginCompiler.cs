@@ -54,7 +54,10 @@ namespace Gatsby
 
             var compilation = Compilation.Create(assemblyName, new CompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateAssemblyReference("mscorlib"))
+                .AddReferences(MetadataReference.CreateAssemblyReference("System"))
+                .AddReferences(MetadataReference.CreateAssemblyReference("System.Core"))
                 .AddReferences(new MetadataFileReference(this.GetType().Assembly.Location))
+                .AddReferences(new MetadataFileReference(Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "RazorBurn.dll")))
                 .AddSyntaxTrees(syntaxTree);
 
             using (FileStream stream = new FileStream(outputPath, FileMode.Create))
