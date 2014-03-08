@@ -8,5 +8,8 @@
     <ExcludePattern>.gitignore</ExcludePattern>
     <ExcludePattern>.gitattributes</ExcludePattern>
   </ExcludePatterns>
+  <PageFileNameExtensions>
+    <PageFileNameExtension>cshtml</PageFileNameExtension>
+  </PageFileNameExtensions>
   <ExcerptSeparator><![CDATA[<!--more-->]]></ExcerptSeparator>
 </Gatsby>

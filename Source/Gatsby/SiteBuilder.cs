@@ -28,7 +28,10 @@ namespace Gatsby
 
         private void WriteContent(Config config, SiteContent page, Site site)
         {
-            string content = this.razorRenderer.LayoutContent(page.Layout, page.Content, page, site);
+            string content = page.Content;
+
+            if (!string.IsNullOrEmpty(page.Layout))
+                content = this.razorRenderer.LayoutContent(page.Layout, content, page, site);
 
             string destination = Path.Combine(config.Destination, page.Permalink);
 
@@ -41,7 +44,7 @@ namespace Gatsby
 
         public void Build(Config config)
         {
-            SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config.Source, config.ExcludePatterns);
+            SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config);
                                                
             if (Directory.Exists(config.Destination))
                 Directory.Delete(config.Destination, true);

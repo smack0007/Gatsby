@@ -11,21 +11,21 @@ namespace Gatsby
     {
         private static string DirectorySeperator = Path.DirectorySeparatorChar.ToString();
 
-        public SourceFiles Enumerate(string sourcePath, List<string> excludePatterns)
+        public SourceFiles Enumerate(Config config)
         {
             SourceFiles sourceFiles = new SourceFiles();
 
             List<SourceFilePath> pages = new List<SourceFilePath>();
             List<SourceFilePath> staticFiles = new List<SourceFilePath>();
-            Scan(pages, staticFiles, sourcePath, sourcePath, excludePatterns);
+            Scan(pages, staticFiles, config.Source, config.Source, config);
 
             sourceFiles.Pages = pages;
             sourceFiles.StaticFiles = staticFiles;
-            sourceFiles.Posts = FindFilesToProcess(Path.Combine(sourcePath, "_Posts"), "*.cshtml", excludePatterns);
-            sourceFiles.Paginators = FindFilesToProcess(Path.Combine(sourcePath, "_Paginators"), "*.cshtml", excludePatterns);
-            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(sourcePath, "_Layouts"), "*.cshtml", excludePatterns);
-            sourceFiles.Includes = FindFilesToProcess(Path.Combine(sourcePath, "_Includes"), "*.cshtml", excludePatterns);
-            sourceFiles.Plugins = FindFilesToProcess(Path.Combine(sourcePath, "_Plugins"), "*.cs", excludePatterns);            
+            sourceFiles.Posts = FindFilesToProcess(Path.Combine(config.Source, "_Posts"), "*.cshtml", config.ExcludePatterns);
+            sourceFiles.Paginators = FindFilesToProcess(Path.Combine(config.Source, "_Paginators"), "*.cshtml", config.ExcludePatterns);
+            sourceFiles.Layouts = FindFilesToProcess(Path.Combine(config.Source, "_Layouts"), "*.cshtml", config.ExcludePatterns);
+            sourceFiles.Includes = FindFilesToProcess(Path.Combine(config.Source, "_Includes"), "*.cshtml", config.ExcludePatterns);
+            sourceFiles.Plugins = FindFilesToProcess(Path.Combine(config.Source, "_Plugins"), "*.cs", config.ExcludePatterns);            
 
             return sourceFiles;
         }
@@ -56,9 +56,9 @@ namespace Gatsby
                     }).ToArray(); // ToArray is important to prevent delayed execution.
         }
 
-        private static void Scan(List<SourceFilePath> pages, List<SourceFilePath> staticFiles, string path, string basePath, List<string> excludePatterns)
+        private static void Scan(List<SourceFilePath> pages, List<SourceFilePath> staticFiles, string path, string basePath, Config config)
         {
-            var excludeFileNames = excludePatterns.SelectMany(x => Directory.EnumerateFileSystemEntries(path, x, SearchOption.TopDirectoryOnly));
+            var excludeFileNames = config.ExcludePatterns.SelectMany(x => Directory.EnumerateFileSystemEntries(path, x, SearchOption.TopDirectoryOnly));
             var fileNames = Directory.EnumerateFileSystemEntries(path, "*", SearchOption.TopDirectoryOnly).Where(x => !excludeFileNames.Contains(x));
 
             foreach (var fileName in fileNames)
@@ -71,7 +71,7 @@ namespace Gatsby
 
                 if (Directory.Exists(fileName))
                 {
-                    Scan(pages, staticFiles, fileName, basePath, excludePatterns);
+                    Scan(pages, staticFiles, fileName, basePath, config);
                 }
                 else
                 {
@@ -81,7 +81,7 @@ namespace Gatsby
                             RelativePath = CalculateRelativePath(fileName, basePath)
                         };
 
-                    if (Path.GetExtension(file) == ".cshtml")
+                    if (config.PageFileNameExtensions.Contains(Path.GetExtension(file).Substring(1)))
                     {
                         pages.Add(sourceFilePath);
                     }

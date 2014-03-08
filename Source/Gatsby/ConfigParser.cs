@@ -27,6 +27,11 @@ namespace Gatsby
                 config.ExcludePatterns.Add(excludePattern.Value);
             }
 
+            foreach (var pageFileNameExtension in doc.Root.GetChildElements("PageFileNameExtensions"))
+            {
+                config.PageFileNameExtensions.Add(pageFileNameExtension.Value);
+            }
+
             config.ExcerptSeparator = doc.Root.GetValue("ExcerptSeparator");
 
             return config;

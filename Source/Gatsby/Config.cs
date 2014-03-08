@@ -29,7 +29,13 @@ namespace Gatsby
         public List<string> ExcludePatterns
         {
             get;
-            set;
+            private set;
+        }
+
+        public List<string> PageFileNameExtensions
+        {
+            get;
+            private set;
         }
 
         public string ExcerptSeparator
@@ -41,6 +47,7 @@ namespace Gatsby
         public Config()
         {
             this.ExcludePatterns = new List<string>();
+            this.PageFileNameExtensions = new List<string>();
         }
     }
 }
