@@ -48,8 +48,9 @@ namespace Gatsby
             private set;
         }
 
-        public Site()
+        public Site(string baseUrl)
         {
+            this.BaseUrl = baseUrl;
             this.Plugins = new PluginManager();
             this.Posts = new List<Post>();
             this.Pages = new List<Page>();

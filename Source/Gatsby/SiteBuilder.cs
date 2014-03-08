@@ -52,7 +52,7 @@ namespace Gatsby
 
             try
             {
-                Site site = new Site();
+                Site site = new Site(config.BaseUrl);
 
                 foreach (var path in sourceFiles.Plugins)
                 {

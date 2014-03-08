@@ -23,7 +23,7 @@ namespace Gatsby
 
         protected string BaseUrl(string relativeUrl)
         {
-            return this.Site.BaseUrl + "/" + relativeUrl;
+            return this.Site.BaseUrl.TrimEnd('/') + "/" + relativeUrl;
         }
 
         /// <summary>
