@@ -17,7 +17,8 @@ namespace Gatsby
             string configDirectory = Path.GetDirectoryName(configPath);
 
             Config config = new Config();
-            
+
+            config.Culture = doc.Root.GetValue("Culture");
             config.Source =  Path.Combine(configDirectory, doc.Root.GetValue("Source"));
             config.Destination = Path.Combine(configDirectory, doc.Root.GetValue("Destination"));
             config.BaseUrl = doc.Root.GetValue("BaseUrl");

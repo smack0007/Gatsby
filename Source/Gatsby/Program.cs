@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComponentGlue;
+using System.Threading;
+using System.Globalization;
 
 namespace Gatsby
 {
@@ -63,6 +65,9 @@ namespace Gatsby
                 this.logger.Error(ex.Message);
                 return 2;
             }
+
+            if (!string.IsNullOrEmpty(config.Culture))
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(config.Culture);
 
             switch (options.Action)
             {

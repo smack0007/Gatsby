@@ -8,6 +8,12 @@ namespace Gatsby
 {
     public class Config
     {
+        public string Culture
+        {
+            get;
+            set;
+        }
+
         public string Source
         {
             get;
