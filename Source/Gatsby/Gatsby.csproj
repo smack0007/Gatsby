@@ -87,6 +87,7 @@
     <Compile Include="GatsbyException.cs" />
     <Compile Include="GatsbyRazorTemplate.cs" />
     <Compile Include="HttpServer.cs" />
+    <Compile Include="Include.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MarkdownTransformer.cs" />

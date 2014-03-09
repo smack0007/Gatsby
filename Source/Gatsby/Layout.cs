@@ -27,12 +27,12 @@ namespace Gatsby
             set;
         }
 
-        public string Run(string content, SiteContent page, Site site)
+        public string Run(string content, SiteContent page, RazorRenderer razorRenderer, Site site)
         {
             this.Content = content;
             this.Page = page;
 
-            this.InitGatsbyRazorTemplate(site);
+            this.InitGatsbyRazorTemplate(razorRenderer, site);
 
             return this.ExecuteTemplate();
         }

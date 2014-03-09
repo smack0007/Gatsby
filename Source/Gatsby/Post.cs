@@ -33,9 +33,14 @@ namespace Gatsby
             this.Tags = new List<string>();
         }
 
-        internal override void Run(Config config, MarkdownTransformer markdownTransformer, string relativePath, Site site)
+        internal override void Run(
+            Config config,
+            MarkdownTransformer markdownTransformer,
+            string relativePath,
+            RazorRenderer razorRenderer,
+            Site site)
         {
-            base.Run(config, markdownTransformer, relativePath, site);
+            base.Run(config, markdownTransformer, relativePath, razorRenderer, site);
 
             if (!string.IsNullOrEmpty(config.ExcerptSeparator))
             {

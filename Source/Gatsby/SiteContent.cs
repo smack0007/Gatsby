@@ -70,13 +70,18 @@ namespace Gatsby
             this.Data = new DynamicDictionary();
         }
 
-        internal virtual void Run(Config config, MarkdownTransformer markdownTransformer, string relativePath, Site site)
+        internal virtual void Run(
+            Config config,
+            MarkdownTransformer markdownTransformer,
+            string relativePath,
+            RazorRenderer razorRenderer,
+            Site site)
         {
             if (this.Content != null)
                 throw new InvalidOperationException("Template has already been run.");
 
             this.RelativePath = relativePath;
-            this.InitGatsbyRazorTemplate(site);
+            this.InitGatsbyRazorTemplate(razorRenderer, site);
 
             this.Content = this.ExecuteTemplate();
 

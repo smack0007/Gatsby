@@ -14,6 +14,7 @@ namespace Gatsby
         Logger logger;
 
         RazorCompiler compiler;
+        Dictionary<string, Include> includes;
         Dictionary<string, Layout> layouts;
                 
         public RazorRenderer(MarkdownTransformer markdownTransformer, Logger logger)
@@ -23,13 +24,31 @@ namespace Gatsby
 
             this.compiler = new RazorCompiler();
             this.compiler.NamespaceImports.Add("System.Linq");
+            this.compiler.NamespaceImports.Add("Gatsby");
 
+            this.includes = new Dictionary<string, Include>();
             this.layouts = new Dictionary<string, Layout>();
         }
 
         public void AddPluginPath(string path)
         {
             this.compiler.ReferencedAssemblies.AddFile(Path.GetFullPath(path));
+        }
+
+        public void LoadIncludes(IEnumerable<SourceFilePath> includePaths)
+        {
+            foreach (var path in includePaths)
+            {
+                try
+                {
+                    var include = this.compiler.Compile<Include>(File.ReadAllText(path.AbsolutePath));
+                    includes.Add(Path.GetFileNameWithoutExtension(path.RelativePath), include);
+                }
+                catch (RazorCompilationException ex)
+                {
+                    throw new GatsbyException(string.Format("Failed while compiling include {0}:\n\t{1}", path.AbsolutePath, string.Join("\n\t", ex.Errors)));
+                }
+            }
         }
 
         public void LoadLayouts(IEnumerable<SourceFilePath> layoutPaths)
@@ -47,7 +66,7 @@ namespace Gatsby
                 }
             }
         }
-
+                
         public Post RenderPost(Config config, SourceFilePath path, Site site)
         {
             Post post = null;
@@ -55,7 +74,7 @@ namespace Gatsby
             try
             {
                 post = this.compiler.Compile<Post>(File.ReadAllText(path.AbsolutePath));
-                post.Run(config, this.markdownTransformer, path.RelativePath, site);                
+                post.Run(config, this.markdownTransformer, path.RelativePath, this, site);                
             }
             catch (RazorCompilationException ex)
             {
@@ -72,7 +91,7 @@ namespace Gatsby
             try
             {
                 page = this.compiler.Compile<Page>(File.ReadAllText(path.AbsolutePath));
-                page.Run(config, this.markdownTransformer, path.RelativePath, site);
+                page.Run(config, this.markdownTransformer, path.RelativePath, this, site);
             }
             catch (RazorCompilationException ex)
             {
@@ -102,7 +121,7 @@ namespace Gatsby
             {
                 var template = factory.Create();
                 template.PageNumber = pageNumber;
-                template.Run(config, this.markdownTransformer, path.RelativePath, site);
+                template.Run(config, this.markdownTransformer, path.RelativePath, this, site);
 
                 pagintors.Add(template);
 
@@ -115,17 +134,24 @@ namespace Gatsby
             return pagintors;
         }
 
+        public string RenderInclude(string includeName, Site site, dynamic model)
+        {
+            if (!this.includes.ContainsKey(includeName))
+                throw new GatsbyException(string.Format("Include \"{0}\" was not found.", includeName));
+
+            var include = this.includes[includeName];
+
+            return include.Run(this, site, model);
+        }
+
         public string LayoutContent(string layoutName, string content, SiteContent page, Site site)
         {
             if (!this.layouts.ContainsKey(layoutName))
-            {
-                this.logger.Error("Layout \"{0}\" was not found.", layoutName);
-                return content;
-            }
+                throw new GatsbyException(string.Format("Layout \"{0}\" was not found.", layoutName));
 
             var layout = this.layouts[layoutName];
 
-            content = layout.Run(content, page, site);
+            content = layout.Run(content, page, this, site);
 
             if (string.IsNullOrEmpty(layout.Parent))
                 return content;

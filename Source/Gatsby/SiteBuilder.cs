@@ -63,7 +63,8 @@ namespace Gatsby
                     this.pluginCompiler.Compile(path, pluginPath, site.Plugins);
                     this.razorRenderer.AddPluginPath(pluginPath);
                 }
-                
+
+                this.razorRenderer.LoadIncludes(sourceFiles.Includes);
                 this.razorRenderer.LoadLayouts(sourceFiles.Layouts);
 
                 foreach (var path in sourceFiles.Posts)

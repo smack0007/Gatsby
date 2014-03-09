@@ -10,15 +10,28 @@ namespace Gatsby
 {
     public abstract class GatsbyRazorTemplate : RazorTemplate
     {
+        RazorRenderer razorRenderer;
+
         public Site Site
         {
             get;
             private set;
         }
         
-        internal void InitGatsbyRazorTemplate(Site site)
+        internal void InitGatsbyRazorTemplate(RazorRenderer razorRenderer, Site site)
         {
+            this.razorRenderer = razorRenderer;
             this.Site = site;
+        }
+
+        protected string Include(string includeName)
+        {
+            return this.razorRenderer.RenderInclude(includeName, this.Site, null);
+        }
+
+        protected string Include(string includeName, dynamic model)
+        {
+            return this.razorRenderer.RenderInclude(includeName, this.Site, model);
         }
 
         protected string BaseUrl(string relativeUrl)
