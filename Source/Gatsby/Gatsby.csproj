@@ -92,7 +92,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="MarkdownTransformer.cs" />
     <Compile Include="Page.cs" />
-    <Compile Include="PaginatorPage.cs" />
+    <Compile Include="Generator.cs" />
     <Compile Include="PluginCompiler.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="IBeforePaginationHook.cs" />

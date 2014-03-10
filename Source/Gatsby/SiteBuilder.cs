@@ -83,7 +83,7 @@ namespace Gatsby
 
                 site.Plugins.BeforePagination(site);
 
-                foreach (var path in sourceFiles.Paginators)
+                foreach (var path in sourceFiles.Generators)
                 {
                     var pages = this.razorRenderer.RenderPaginator(config, path, site);
                     site.PaginatorPages.AddRange(pages);

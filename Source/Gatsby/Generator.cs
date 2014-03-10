@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public abstract class PaginatorPage : Page
+    public abstract class Generator : Page
     {
         public int PageNumber
         {
@@ -14,13 +14,13 @@ namespace Gatsby
             internal set;
         }
 
-        public bool PaginationFinished
+        public bool GeneratorFinished
         {
             get;
             protected set;
         }
 
-        public PaginatorPage()
+        public Generator()
             : base()
         {
             this.IsMarkdown = false;

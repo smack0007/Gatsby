@@ -20,7 +20,7 @@ namespace Gatsby
             set;
         }
 
-        public IEnumerable<SourceFilePath> Paginators
+        public IEnumerable<SourceFilePath> Generators
         {
             get;
             set;
