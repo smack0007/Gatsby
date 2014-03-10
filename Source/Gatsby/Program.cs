@@ -72,7 +72,8 @@ namespace Gatsby
             switch (options.Action)
             {
                 case GatsbyAction.Build:
-                    this.BuildSite(config);
+                    if (!this.BuildSite(config))
+                        return 4;
                     break;
 
                 case GatsbyAction.Serve:
@@ -83,7 +84,7 @@ namespace Gatsby
             return 0;
         }
 
-        private void BuildSite(Config config)
+        private bool BuildSite(Config config)
         {
             try
             {
@@ -92,11 +93,15 @@ namespace Gatsby
             catch (GatsbyException ex)
             {
                 this.logger.Error("An error occured while building: {0}", ex.Message);
+                return false;
             }
             catch (Exception ex)
             {
                 this.logger.Error("An unexpected error occured while building: {0}", ex.Message);
+                return false;
             }
+
+            return true;
         }
 
         private void StartHttpServer(Config config)
