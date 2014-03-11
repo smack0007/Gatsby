@@ -95,7 +95,7 @@
     <Compile Include="Generator.cs" />
     <Compile Include="PluginCompiler.cs" />
     <Compile Include="PluginManager.cs" />
-    <Compile Include="IBeforePaginationHook.cs" />
+    <Compile Include="IBeforeGeneratorsHook.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

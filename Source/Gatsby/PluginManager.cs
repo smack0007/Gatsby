@@ -26,7 +26,7 @@ namespace Gatsby
 
             foreach (Type @interface in type.GetInterfaces())
             {
-                if (@interface == typeof(IBeforePaginationHook))
+                if (@interface == typeof(IBeforeGeneratorsHook))
                     this.beforePaginationHooks.Add(type);
             }
         }
@@ -41,12 +41,12 @@ namespace Gatsby
             return this.instances[type];
         }
 
-        internal void BeforePagination(Site site)
+        internal void BeforeGenerators(Site site)
         {
             foreach (Type type in this.beforePaginationHooks)
             {
-                IBeforePaginationHook hook = (IBeforePaginationHook)this.GetInstance(type);
-                hook.BeforePagination(site);
+                IBeforeGeneratorsHook hook = (IBeforeGeneratorsHook)this.GetInstance(type);
+                hook.BeforeGenerators(site);
             }
         }
 

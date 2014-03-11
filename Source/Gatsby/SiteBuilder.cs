@@ -81,7 +81,7 @@ namespace Gatsby
                     site.Pages.Add(page);
                 }
 
-                site.Plugins.BeforePagination(site);
+                site.Plugins.BeforeGenerators(site);
 
                 foreach (var path in sourceFiles.Generators)
                 {

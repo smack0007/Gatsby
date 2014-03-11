@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Gatsby
 {
-    public interface IBeforePaginationHook
+    public interface IBeforeGeneratorsHook
     {
-        void BeforePagination(Site site);
+        void BeforeGenerators(Site site);
     }
 }
