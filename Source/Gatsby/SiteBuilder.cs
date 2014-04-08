@@ -86,7 +86,7 @@ namespace Gatsby
                 foreach (var path in sourceFiles.Generators)
                 {
                     var pages = this.razorRenderer.RenderPaginator(config, path, site);
-                    site.PaginatorPages.AddRange(pages);
+                    site.GeneratorPages.AddRange(pages);
                 }
 
                 foreach (var post in site.Posts)
@@ -99,7 +99,7 @@ namespace Gatsby
                     this.WriteContent(config, page, site);
                 }
 
-                foreach (var page in site.PaginatorPages)
+                foreach (var page in site.GeneratorPages)
                 {
                     this.WriteContent(config, page, site);
                 }

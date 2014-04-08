@@ -42,7 +42,7 @@ namespace Gatsby
             private set;
         }
 
-        public List<Generator> PaginatorPages
+        public List<Generator> GeneratorPages
         {
             get;
             private set;
@@ -54,7 +54,7 @@ namespace Gatsby
             this.Plugins = new PluginManager();
             this.Posts = new List<Post>();
             this.Pages = new List<Page>();
-            this.PaginatorPages = new List<Generator>();
+            this.GeneratorPages = new List<Generator>();
         }
     }
 }

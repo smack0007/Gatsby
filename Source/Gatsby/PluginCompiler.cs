@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using System.IO;
 
@@ -48,17 +48,20 @@ namespace Gatsby
 
         public void Compile(SourceFilePath path, string outputPath, PluginManager pluginManager)
         {
-            SyntaxTree syntaxTree = SyntaxTree.ParseFile(path.AbsolutePath);
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseFile(path.AbsolutePath);
 
             string assemblyName = "GatsbyPlugin_" + Path.GetFileNameWithoutExtension(path.AbsolutePath);
+			
+			// TODO: Find a much better way to add refenerences.
 
-            var compilation = Compilation.Create(assemblyName, new CompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                .AddReferences(MetadataReference.CreateAssemblyReference("mscorlib"))
-                .AddReferences(MetadataReference.CreateAssemblyReference("System"))
-                .AddReferences(MetadataReference.CreateAssemblyReference("System.Core"))
-                .AddReferences(new MetadataFileReference(this.GetType().Assembly.Location))
-                .AddReferences(new MetadataFileReference(Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "RazorBurn.dll")))
-                .AddSyntaxTrees(syntaxTree);
+			var compilation = CSharpCompilation.Create(assemblyName)
+				.WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+				.AddReferences(new MetadataFileReference(typeof(object).Assembly.Location))
+				.AddReferences(new MetadataFileReference(typeof(Enumerable).Assembly.Location))
+				.AddReferences(new MetadataFileReference(typeof(Queue<>).Assembly.Location))
+				.AddReferences(new MetadataFileReference(Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "RazorBurn.dll")))
+				.AddReferences(new MetadataFileReference(Assembly.GetEntryAssembly().Location))
+				.AddSyntaxTrees(syntaxTree);
 
             using (FileStream stream = new FileStream(outputPath, FileMode.Create))
             {
