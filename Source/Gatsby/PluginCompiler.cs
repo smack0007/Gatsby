@@ -54,11 +54,13 @@ namespace Gatsby
 			
 			// TODO: Find a much better way to add refenerences.
 
+			var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
+						
 			var compilation = CSharpCompilation.Create(assemblyName)
 				.WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-				.AddReferences(new MetadataFileReference(typeof(object).Assembly.Location))
-				.AddReferences(new MetadataFileReference(typeof(Enumerable).Assembly.Location))
-				.AddReferences(new MetadataFileReference(typeof(Queue<>).Assembly.Location))
+				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "mscorlib.dll")))
+				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "System.dll")))
+				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "System.Core.dll")))
 				.AddReferences(new MetadataFileReference(Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "RazorBurn.dll")))
 				.AddReferences(new MetadataFileReference(Assembly.GetEntryAssembly().Location))
 				.AddSyntaxTrees(syntaxTree);
