@@ -55,7 +55,7 @@ namespace Gatsby
 
             try
             {
-                Site site = new Site(config.BaseUrl);
+                Site site = new Site(config);
 
                 foreach (var path in sourceFiles.Plugins)
                 {
@@ -88,6 +88,8 @@ namespace Gatsby
                     var pages = this.razorRenderer.RenderPaginator(config, path, site);
                     site.GeneratorPages.AddRange(pages);
                 }
+
+				site.Plugins.AfterGenerators(site);
 
                 foreach (var post in site.Posts)
                 {

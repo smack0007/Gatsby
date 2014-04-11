@@ -56,7 +56,7 @@ namespace Gatsby
             protected set;
         }
 
-        public DynamicDictionary Data
+        public dynamic Data
         {
             get;
             private set;
@@ -83,7 +83,13 @@ namespace Gatsby
             this.RelativePath = relativePath;
             this.InitGatsbyRazorTemplate(razorRenderer, site);
 
-            this.Content = this.ExecuteTemplate();
+			try
+			{
+				this.Content = this.ExecuteTemplate();
+			}
+			catch (Exception ex)
+			{
+			}
 
             if (this.IsMarkdown)
                 this.Content = markdownTransformer.Transform(this.Content);

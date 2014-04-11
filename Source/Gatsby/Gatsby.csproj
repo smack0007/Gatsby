@@ -86,10 +86,12 @@
     <Compile Include="ConfigGenerator.cs" />
     <Compile Include="ConfigParser.cs" />
     <Compile Include="DynamicDictionary.cs" />
+    <Compile Include="DynamicValue.cs" />
     <Compile Include="GatsbyAction.cs" />
     <Compile Include="GatsbyException.cs" />
     <Compile Include="GatsbyRazorTemplate.cs" />
     <Compile Include="HttpServer.cs" />
+    <Compile Include="IAfterGeneratorsHook.cs" />
     <Compile Include="Include.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Logger.cs" />

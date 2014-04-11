@@ -134,14 +134,25 @@ namespace Gatsby
             return pagintors;
         }
 
-        public string RenderInclude(string includeName, Site site, dynamic model)
+        public string RenderInclude(string includeName, Site site, object model)
         {
             if (!this.includes.ContainsKey(includeName))
                 throw new GatsbyException(string.Format("Include \"{0}\" was not found.", includeName));
 
             var include = this.includes[includeName];
 
-            return include.Run(this, site, model);
+			string output = null;
+
+			try
+			{
+				output = include.Run(this, site, model);
+			}
+			catch (Exception ex)
+			{
+				throw new GatsbyException(string.Format("Failed while rendering include \"{0}\":\n\t{1}", includeName, ex.Message));
+			}
+
+			return output;
         }
 
         public string LayoutContent(string layoutName, string content, SiteContent page, Site site)

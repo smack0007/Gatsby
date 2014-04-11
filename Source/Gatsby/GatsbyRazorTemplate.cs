@@ -29,7 +29,7 @@ namespace Gatsby
             return this.razorRenderer.RenderInclude(includeName, this.Site, null);
         }
 
-        protected string Include(string includeName, dynamic model)
+        protected string Include(string includeName, object model)
         {
             return this.razorRenderer.RenderInclude(includeName, this.Site, model);
         }

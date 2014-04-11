@@ -51,8 +51,6 @@ namespace Gatsby
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseFile(path.AbsolutePath);
 
             string assemblyName = "GatsbyPlugin_" + Path.GetFileNameWithoutExtension(path.AbsolutePath);
-			
-			// TODO: Find a much better way to add refenerences.
 
 			var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
 						
@@ -61,6 +59,7 @@ namespace Gatsby
 				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "mscorlib.dll")))
 				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "System.dll")))
 				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "System.Core.dll")))
+				.AddReferences(new MetadataFileReference(Path.Combine(assemblyPath, "Microsoft.CSharp.dll")))
 				.AddReferences(new MetadataFileReference(Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "RazorBurn.dll")))
 				.AddReferences(new MetadataFileReference(Assembly.GetEntryAssembly().Location))
 				.AddSyntaxTrees(syntaxTree);

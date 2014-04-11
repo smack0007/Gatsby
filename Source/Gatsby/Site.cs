@@ -8,6 +8,8 @@ namespace Gatsby
 {
     public class Site
     {
+		Config config;
+
         public PluginManager Plugins
         {
             get;
@@ -16,9 +18,13 @@ namespace Gatsby
 
         public string BaseUrl
         {
-            get;
-            private set;
+			get { return this.config.BaseUrl; }
         }
+
+		public string Destination
+		{
+			get { return this.config.Destination; }
+		}
 
         public List<Post> Posts
         {
@@ -48,9 +54,10 @@ namespace Gatsby
             private set;
         }
 
-        public Site(string baseUrl)
+        internal Site(Config config)
         {
-            this.BaseUrl = baseUrl;
+			this.config = config;
+
             this.Plugins = new PluginManager();
             this.Posts = new List<Post>();
             this.Pages = new List<Page>();

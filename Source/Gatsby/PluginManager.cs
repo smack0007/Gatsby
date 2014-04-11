@@ -11,13 +11,15 @@ namespace Gatsby
         Dictionary<Type, object> instances;
 
         List<Type> pluginTypes;
-        List<Type> beforePaginationHooks;
+        List<Type> beforeGeneratorsHooks;
+		List<Type> afterGeneratorsHooks;
 
         public PluginManager()
         {
             this.instances = new Dictionary<Type, object>();
             this.pluginTypes = new List<Type>();
-            this.beforePaginationHooks = new List<Type>();
+            this.beforeGeneratorsHooks = new List<Type>();
+			this.afterGeneratorsHooks = new List<Type>();
         }
 
         internal void Register(Type type)
@@ -26,8 +28,14 @@ namespace Gatsby
 
             foreach (Type @interface in type.GetInterfaces())
             {
-                if (@interface == typeof(IBeforeGeneratorsHook))
-                    this.beforePaginationHooks.Add(type);
+				if (@interface == typeof(IBeforeGeneratorsHook))
+				{
+					this.beforeGeneratorsHooks.Add(type);
+				}
+				else if (@interface == typeof(IAfterGeneratorsHook))
+				{
+					this.afterGeneratorsHooks.Add(type);
+				}
             }
         }
 
@@ -43,12 +51,21 @@ namespace Gatsby
 
         internal void BeforeGenerators(Site site)
         {
-            foreach (Type type in this.beforePaginationHooks)
+            foreach (Type type in this.beforeGeneratorsHooks)
             {
                 IBeforeGeneratorsHook hook = (IBeforeGeneratorsHook)this.GetInstance(type);
                 hook.BeforeGenerators(site);
             }
         }
+
+		internal void AfterGenerators(Site site)
+		{
+			foreach (Type type in this.afterGeneratorsHooks)
+			{
+				IAfterGeneratorsHook hook = (IAfterGeneratorsHook)this.GetInstance(type);
+				hook.AfterGenerators(site);
+			}
+		}
 
         public T Get<T>()
         {
