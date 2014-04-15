@@ -15,7 +15,7 @@ namespace Gatsby
             private set;
         }
 
-        public SiteContent Page
+        public dynamic Model
         {
             get;
             private set;
@@ -30,7 +30,7 @@ namespace Gatsby
         public string Run(string content, SiteContent page, RazorRenderer razorRenderer, Site site)
         {
             this.Content = content;
-            this.Page = page;
+            this.Model = new DynamicValue(page);
 
             this.InitGatsbyRazorTemplate(razorRenderer, site);
 

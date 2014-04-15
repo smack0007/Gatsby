@@ -162,7 +162,14 @@ namespace Gatsby
 
             var layout = this.layouts[layoutName];
 
-            content = layout.Run(content, page, this, site);
+			try
+			{
+				content = layout.Run(content, page, this, site);
+			}
+			catch (Exception ex)
+			{
+				throw new GatsbyException(string.Format("Failed while rendering layout \"{0}\":\n\t{1}", layoutName, ex.Message));
+			}
 
             if (string.IsNullOrEmpty(layout.Parent))
                 return content;
