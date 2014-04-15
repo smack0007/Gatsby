@@ -44,6 +44,12 @@ namespace Gatsby
             protected set;
         }
 
+		public DateTime? LastUpdate
+		{
+			get;
+			protected internal set;
+		}
+
         public bool Published
         {
             get;

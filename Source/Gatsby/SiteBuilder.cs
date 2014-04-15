@@ -42,6 +42,12 @@ namespace Gatsby
             File.WriteAllText(destination, content);
         }
 
+		private void SetDefaultsForContent(SiteContent content)
+		{
+			if (content.LastUpdate == null)
+				content.LastUpdate = content.Date;
+		}
+
         public void Build(Config config)
         {
             SourceFiles sourceFiles = this.sourceFileEnumerator.Enumerate(config);
@@ -70,6 +76,7 @@ namespace Gatsby
                 foreach (var path in sourceFiles.Posts)
                 {
                     var post = this.razorRenderer.RenderPost(config, path, site);
+					this.SetDefaultsForContent(post);
                     site.Posts.Add(post);
                 }
 
@@ -78,6 +85,7 @@ namespace Gatsby
                 foreach (var path in sourceFiles.Pages)
                 {
                     var page = this.razorRenderer.RenderPage(config, path, site);
+					this.SetDefaultsForContent(page);
                     site.Pages.Add(page);
                 }
 
@@ -86,7 +94,11 @@ namespace Gatsby
                 foreach (var path in sourceFiles.Generators)
                 {
                     var pages = this.razorRenderer.RenderPaginator(config, path, site);
-                    site.GeneratorPages.AddRange(pages);
+					
+					foreach (var page in pages)
+						this.SetDefaultsForContent(page);
+                    
+					site.GeneratorPages.AddRange(pages);
                 }
 
 				site.Plugins.AfterGenerators(site);

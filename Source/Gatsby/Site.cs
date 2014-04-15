@@ -48,6 +48,11 @@ namespace Gatsby
             private set;
         }
 
+		public IEnumerable<SiteContent> Content
+		{
+			get { return this.Posts.Cast<SiteContent>().Concat(this.Pages.Cast<SiteContent>().Concat(this.GeneratorPages.Cast<SiteContent>())); }
+		}
+
         public List<Generator> GeneratorPages
         {
             get;
