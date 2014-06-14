@@ -99,6 +99,7 @@
     <Compile Include="SourceFileEnumerator.cs" />
     <Compile Include="SourceFilePath.cs" />
     <Compile Include="SourceFiles.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

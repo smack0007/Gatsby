@@ -38,35 +38,10 @@ namespace Gatsby
         {
             return this.Site.BaseUrl.TrimEnd('/') + '/' + relativeUrl.TrimStart('/');
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <remarks>Credit to Joan from StackOverflow: http://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c </remarks>
-        protected static string UrlSlug(string value)
-        {
-            //First to lower case
-            value = value.ToLowerInvariant();
-
-            //Remove all accents
-            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
-
-            //Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
-
-            //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
-
-            //Trim dashes from end
-            value = value.Trim('-', '_');
-
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
-
-            return value;
-        }
+				
+		protected static string UrlSlug(string url)
+		{
+			return Utility.UrlSlug(url);
+		}
     }
 }
